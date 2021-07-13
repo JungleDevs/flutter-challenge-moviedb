@@ -17,7 +17,7 @@ Design: [Figma](https://www.figma.com/file/gRw33pnPCjbRAE8DyhOsZm/Android-%E2%80
 
 1. Clone the repository using GitHub.
 2. Connect a smartphone to the computador or start an ADV (Android Virtual Device).
-3. In the terminal, go to the project's root folder and type the command: `flutter install`
+3. In the terminal, go to the project's root folder and type the commands:  `flutter build apk` and `flutter install`
 4. Open the application "Top Movies"
 
 ### Images:
