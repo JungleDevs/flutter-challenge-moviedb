@@ -1,6 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jungle/app/core/constants/api.dart';
+import 'package:jungle/app/core/models/movie_model.dart';
+import 'package:jungle/app/core/repositories/movie_details_repository.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,6 +12,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  MovieModel? movieModel;
+
+  void init() async {
+    try {
+      movieModel = await MovieDetailsRepository.call(id: 76341);
+    } catch (e) {
+      print('error!');
+    }
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      init();
+    });
+
+    super.initState();
+  }
+
   var bg_color = Color(0xFF070818);
 
   @override
@@ -45,14 +67,14 @@ class _HomePageState extends State<HomePage> {
         child: ListView.builder(
           itemCount: 5,
           itemBuilder: (ctx, idx) {
-            return movieTile(topMovie: idx == 0);
+            return movieTile(movie: movieModel!, topMovie: idx == 0);
           },
         ),
       ),
     );
   }
 
-  Widget movieTile({required bool topMovie}) {
+  Widget movieTile({required MovieModel movie, required bool topMovie}) {
     return Container(
       alignment: Alignment.topLeft,
       height: 168,
@@ -62,14 +84,14 @@ class _HomePageState extends State<HomePage> {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             width: 118,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                  'assets/poster.jpg',
-                ),
+                image:
+                    NetworkImage('$BASE_IMAGE_URL/w200/${movie.poster_image}'),
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.only(
@@ -78,99 +100,117 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Visibility(
-                  visible: topMovie,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/svg/il_goldmedal_small.svg',
-                        semanticsLabel: 'Gold Medal',
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        'Top movie this week',
-                        style: TextStyle(
-                          color: Colors.white,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 16, bottom: 16, left: 16, right: 2),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Visibility(
+                    visible: topMovie,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/svg/il_goldmedal_small.svg',
+                          semanticsLabel: 'Gold Medal',
                         ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: topMovie ? 8 : 0,
-                ),
-                Text(
-                  'Captain Marvel',
-                  maxLines: 3,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  'Fantasy / Action\n2019',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 2),
-                      decoration: BoxDecoration(
-                        color: topMovie ? Color(0xFF1F8CFF) : Color(0xFF252634),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ...List.generate(
-                            5,
-                            (index) => Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 2,
-                                vertical: 3,
-                              ),
-                              child: Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                                size: 16,
-                              ),
-                            ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          'Top movie this week',
+                          style: TextStyle(
+                            color: Colors.white,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 4,
-                              right: 6,
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: topMovie ? 8 : 0,
+                  ),
+                  Text(
+                    '${movie.title}',
+                    maxLines: 3,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    '${movie.genres.reduce((val, e) => '$val / $e')}',
+                    softWrap: true,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Color(0xFFCCE5FF),
+                      fontSize: 12,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    '${movie.release_date.year}',
+                    style: TextStyle(
+                      color: Color(0xFFCCE5FF),
+                      fontSize: 12,
+                    ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 2),
+                        decoration: BoxDecoration(
+                          color:
+                              topMovie ? Color(0xFF1F8CFF) : Color(0xFF252634),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ...List.generate(
+                              5,
+                              (index) => Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 2,
+                                  vertical: 3,
+                                ),
+                                child: Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                  size: 16,
+                                ),
+                              ),
                             ),
-                            child: Text(
-                              '5/5',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFFCCE5FF),
-                                  fontWeight: FontWeight.w400),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 4,
+                                right: 6,
+                              ),
+                              child: Text(
+                                '${movie.rating ~/ 2}/5',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFFCCE5FF),
+                                    fontWeight: FontWeight.w400),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           )
         ],
