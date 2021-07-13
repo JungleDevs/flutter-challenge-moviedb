@@ -185,7 +185,9 @@ class _HomePageState extends State<HomePage> {
                                   vertical: 3,
                                 ),
                                 child: Icon(
-                                  Icons.star,
+                                  index >= movie.rating.ceil() ~/ 2
+                                      ? Icons.star_border
+                                      : Icons.star,
                                   color: Colors.amber,
                                   size: 16,
                                 ),
@@ -197,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                                 right: 6,
                               ),
                               child: Text(
-                                '${movie.rating ~/ 2}/5',
+                                '${movie.rating.ceil() ~/ 2}/5',
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFFCCE5FF),
