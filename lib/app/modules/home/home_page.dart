@@ -2,9 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jungle/app/core/constants/api.dart';
-import 'package:jungle/app/core/models/movie_model.dart';
-import 'package:jungle/app/core/repositories/movie_details_repository.dart';
-// import 'package:google_fonts/google_fonts.dart';
+import 'package:jungle/app/core/models/trending_movie_model.dart';
+import 'package:jungle/app/core/repositories/trending_movies_repository.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,13 +11,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  MovieModel? movieModel;
+  List<TrendingMovieModel> trendingMovies = [];
 
   void init() async {
     try {
-      movieModel = await MovieDetailsRepository.call(id: 76341);
+      trendingMovies.addAll(await TrendingMoviesRepository.call());
     } catch (e) {
-      print('error!');
+      print('error: $e');
     }
   }
 
@@ -61,20 +60,21 @@ class _HomePageState extends State<HomePage> {
     return Padding(
       padding: const EdgeInsets.all(24),
       child: RefreshIndicator(
-        onRefresh: () async {
-          print('oi');
-        },
+        onRefresh: () async {},
         child: ListView.builder(
-          itemCount: 5,
+          itemCount: trendingMovies.length,
           itemBuilder: (ctx, idx) {
-            return movieTile(movie: movieModel!, topMovie: idx == 0);
+            return movieTile(movie: trendingMovies[idx], topMovie: idx == 0);
           },
         ),
       ),
     );
   }
 
-  Widget movieTile({required MovieModel movie, required bool topMovie}) {
+  Widget movieTile({
+    required TrendingMovieModel movie,
+    required bool topMovie,
+  }) {
     return Container(
       alignment: Alignment.topLeft,
       height: 168,
