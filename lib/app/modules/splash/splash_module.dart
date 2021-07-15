@@ -1,5 +1,5 @@
-import 'package:jungle/app//modules/splash/splash_Page.dart';
-import 'package:jungle/app//modules/splash/splash_bloc.dart';
+import 'package:jungle/app/modules/splash/splash_Page.dart';
+import 'package:jungle/app/modules/splash/splash_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class SplashModule extends Module {

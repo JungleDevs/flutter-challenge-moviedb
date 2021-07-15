@@ -1,5 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:jungle/app//modules/splash/splash_bloc.dart';
+import 'package:jungle/app/modules/splash/splash_bloc.dart';
 
 void main() {
   blocTest<SplashBloc, int>(

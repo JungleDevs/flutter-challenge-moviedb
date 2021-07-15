@@ -9,10 +9,9 @@ class MovieModel {
     required this.release_date,
     required this.poster_image,
     required this.genres,
-    overview,
-    runtime,
-  })  : _overview = overview,
-        _runtime = runtime;
+    this.overview,
+    this.runtime,
+  });
 
   factory MovieModel.fromJson(String source) =>
       MovieModel.fromMap(json.decode(source));
@@ -36,8 +35,8 @@ class MovieModel {
   final DateTime release_date;
   final String title;
 
-  final String? _overview;
-  final int? _runtime;
+  final String? overview;
+  final int? runtime;
 
   @override
   bool operator ==(Object other) {
@@ -47,15 +46,15 @@ class MovieModel {
         other.title == title &&
         other.rating == rating &&
         other.release_date == release_date &&
-        other._overview == _overview &&
+        other.overview == overview &&
         other.poster_image == poster_image &&
-        other._runtime == _runtime &&
+        other.runtime == runtime &&
         listEquals(other.genres, genres);
   }
 
   @override
   String toString() {
-    return 'MovieModel(title: $title, rating: $rating, release_date: $release_date, overview: $_overview, poster_image: $poster_image, runtime: $_runtime, genres: $genres)';
+    return 'MovieModel(title: $title, rating: $rating, release_date: $release_date, overview: $overview, poster_image: $poster_image, runtime: $runtime, genres: $genres)';
   }
 
   MovieModel copyWith({
@@ -73,9 +72,9 @@ class MovieModel {
       title: title ?? this.title,
       rating: rating ?? this.rating,
       release_date: release_date ?? this.release_date,
-      overview: overview ?? _overview,
+      overview: overview ?? overview,
       poster_image: poster_image ?? this.poster_image,
-      runtime: runtime ?? _runtime,
+      runtime: runtime ?? runtime,
       genres: genres ?? this.genres,
     );
   }
@@ -87,9 +86,9 @@ class MovieModel {
       'title': title,
       'rating': rating,
       'release_date': release_date,
-      'overview': _overview,
+      'overview': overview,
       'poster_image': poster_image,
-      'runtime': _runtime,
+      'runtime': runtime,
       'genres': genres,
     };
   }

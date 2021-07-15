@@ -1,5 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:jungle/app//modules/splash/splash_bloc.dart';
+import 'package:jungle/app/modules/splash/splash_bloc.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
@@ -8,6 +8,7 @@ class SplashPage extends StatefulWidget {
   @override
   SplashPageState createState() => SplashPageState();
 }
+
 class SplashPageState extends State<SplashPage> {
   final SplashBloc bloc = Modular.get();
 
