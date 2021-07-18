@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jungle/app/core/constants/api.dart';
+import 'package:jungle/app/modules/details/details_page.dart';
 import 'package:jungle/app/widgets/movie_rating/movie_rating_widget.dart';
 
 class MovieTileWidget extends StatelessWidget {
@@ -17,10 +18,18 @@ class MovieTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Modular.to.pushNamed(
-        '/movie_details',
-        arguments: {'id': movie.id, 'idx': index},
-      ),
+      // onTap: () => Modular.to.pushNamed(
+      //   '/movie_details',
+      //   arguments: {'id': movie.id, 'idx': index},
+      // ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  DetailsPage(movieID: movie.id, listIndex: index)),
+        );
+      },
       child: Container(
         alignment: Alignment.topLeft,
         height: 168,

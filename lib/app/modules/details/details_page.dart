@@ -18,7 +18,7 @@ class DetailsPage extends StatefulWidget {
     required this.listIndex,
   }) : super(key: key);
 
-  late MovieModel movie;
+  MovieModel? movie;
   final int listIndex;
   final int movieID;
   final TextStyle subtitleTextStyle = GoogleFonts.inter(
@@ -29,12 +29,27 @@ class DetailsPage extends StatefulWidget {
   @override
   DetailsPageState createState() => DetailsPageState();
 
-  void getMovieDetails() async {
-    movie = await MovieDetailsRepository.call(id: movieID);
+  Future<MovieModel> getMovieDetails() async {
+    return await MovieDetailsRepository.call(id: movieID);
+  }
+
+  void init() async {
+    await getMovieDetails();
   }
 }
 
-class DetailsPageState extends ModularState<DetailsPage, DetailsBloc> {
+class DetailsPageState extends State<DetailsPage> {
+  @override
+  void initState() {
+    widget.getMovieDetails().then((value) {
+      setState(() {
+        widget.movie = value;
+        print(widget.movie!.id);
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,17 +61,11 @@ class DetailsPageState extends ModularState<DetailsPage, DetailsBloc> {
           leading: BackButton(onPressed: Navigator.of(context).pop),
           backgroundColor: Colors.transparent,
         ),
-        body: body());
-  }
-
-  @override
-  void initState() {
-    print('ID: ${widget.movieID}');
-    setState(() {
-      widget.getMovieDetails();
-    });
-
-    super.initState();
+        body: widget.movie != null
+            ? body()
+            : Center(
+                child: CircularProgressIndicator(),
+              ));
   }
 
   Widget body() {
@@ -65,7 +74,7 @@ class DetailsPageState extends ModularState<DetailsPage, DetailsBloc> {
         Opacity(
           opacity: 0.35,
           child: Image.network(
-            '$BASE_IMAGE_URL/original/${widget.movie.poster_image}',
+            '$BASE_IMAGE_URL/original/${widget.movie!.poster_image}',
           ),
         ),
         Container(
@@ -123,7 +132,7 @@ class DetailsPageState extends ModularState<DetailsPage, DetailsBloc> {
                               width: 8,
                             ),
                             Text(
-                              '${widget.movie.title}',
+                              '${widget.movie!.title}',
                               style: GoogleFonts.inter(
                                 color: Colors.white,
                                 fontSize: 32,
@@ -148,7 +157,7 @@ class DetailsPageState extends ModularState<DetailsPage, DetailsBloc> {
                     child: Visibility(
                       visible: widget.listIndex != 0,
                       child: Text(
-                        '${widget.movie.title}',
+                        '${widget.movie!.title}',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 32,
@@ -164,19 +173,19 @@ class DetailsPageState extends ModularState<DetailsPage, DetailsBloc> {
                     child: Wrap(
                       children: [
                         Text(
-                          '${widget.movie.release_date.year}',
+                          '${widget.movie!.release_date.year}',
                           style: widget.subtitleTextStyle,
                         ),
                         Text(' • ', style: widget.subtitleTextStyle),
                         Text(
-                          '${widget.movie.genres.reduce((val, e) => '$val / $e')}',
+                          '${widget.movie!.genres.reduce((val, e) => '$val / $e')}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: widget.subtitleTextStyle,
                         ),
                         Text(' • ', style: widget.subtitleTextStyle),
                         Text(
-                          convertRuntimeIntoHHMM(widget.movie.runtime!),
+                          convertRuntimeIntoHHMM(widget.movie!.runtime!),
                           style: widget.subtitleTextStyle,
                           softWrap: true,
                         ),
@@ -194,7 +203,7 @@ class DetailsPageState extends ModularState<DetailsPage, DetailsBloc> {
                       margin: EdgeInsets.only(right: 10),
                       width: MediaQuery.of(context).size.width,
                       child: Text(
-                        '${widget.movie.overview} ${widget.movie.overview}',
+                        '${widget.movie!.overview}',
                         maxLines: 30,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
@@ -211,7 +220,7 @@ class DetailsPageState extends ModularState<DetailsPage, DetailsBloc> {
                         ? EdgeInsets.only(left: 72)
                         : EdgeInsets.only(left: 24),
                     child: MovieRatingWidget(
-                      rating: widget.movie.rating,
+                      rating: widget.movie!.rating,
                     ),
                   ),
                 ],

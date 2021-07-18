@@ -17,14 +17,16 @@ class MovieModel {
       MovieModel.fromMap(json.decode(source));
 
   factory MovieModel.fromMap(Map<String, dynamic> map) {
+    print(map['overview']);
     return MovieModel(
         id: map['id'].toInt(),
         title: map['title'],
         rating: map['vote_average'],
         release_date: DateTime.parse(map['release_date']),
         overview: map['overview'],
+        // overview: 'NAO TEM OVERVIEW',
         poster_image: map['poster_path'],
-        runtime: map['runtime']?.toInt(),
+        runtime: map['runtime'].toInt(),
         genres: List.of(map['genres'].map((genre) => genre['name'])));
   }
 

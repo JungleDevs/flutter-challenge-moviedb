@@ -18,11 +18,13 @@ class TrendingMovieModel extends MovieModel {
 
   factory TrendingMovieModel.fromMap(Map<String, dynamic> map) {
     return TrendingMovieModel(
-      id: map['id'].toInt(),
-      title: map['title'],
-      rating: map['vote_average'],
-      release_date: DateTime.parse(map['release_date']),
-      poster_image: map['poster_path'],
+      id: map['id']?.toInt() ?? 12345,
+      title: map['title'] ?? 'No title',
+      rating: map['vote_average'] ?? 0.0,
+      release_date: map['release_date'] != null
+          ? DateTime.parse(map['release_date'])
+          : DateTime.now(),
+      poster_image: map['poster_path'] ?? '',
       genres: [],
     );
   }

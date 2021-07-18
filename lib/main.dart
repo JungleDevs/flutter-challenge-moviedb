@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
-import 'app/app_module.dart';
+import 'package:jungle/app/core/repositories/trending_movies_repository.dart';
 import 'app/app_widget.dart';
 
-void main() => runApp(ModularApp(module: AppModule(), child: AppWidget()));
+void main() => runApp(
+      AppWidget(
+        repository: TrendingMoviesRepository(),
+      ),
+    );

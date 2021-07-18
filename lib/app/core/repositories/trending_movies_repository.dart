@@ -5,7 +5,7 @@ import 'package:jungle/app/core/models/trending_movie_model.dart';
 import 'package:jungle/app/core/utils/getGenreNamesFromId.dart';
 
 class TrendingMoviesRepository {
-  static Future call([int page = 1]) async {
+  static Future fetchMovies([int page = 1]) async {
     Dio dio = Dio();
     int? responseStatusCode;
     List<TrendingMovieModel> trendingList = [];
