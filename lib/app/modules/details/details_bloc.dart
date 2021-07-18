@@ -1,15 +1,21 @@
 import 'package:bloc/bloc.dart';
+import 'package:jungle/app/core/models/movie_model.dart';
+import 'package:jungle/app/core/repositories/movie_details_repository.dart';
 
-enum DetailsEvent {increment}
+enum DetailsEvent { loaded }
 
-class DetailsBloc extends Bloc<DetailsEvent, int> {
-  DetailsBloc() : super(0);
+class DetailsBloc extends Bloc<DetailsEvent, List<MovieModel>> {
+  DetailsBloc() : super([]);
+
+  // List<MovieModel> getOtherTrendingMovies(){
+  //   MovieDetailsRepository.call(id: id);
+  // }
 
   @override
-  Stream<int> mapEventToState(DetailsEvent event) async* {
+  Stream<List<MovieModel>> mapEventToState(DetailsEvent event) async* {
     switch (event) {
-      case DetailsEvent.increment:
-        yield state + 1;
+      case DetailsEvent.loaded:
+        yield [];
         break;
     }
   }

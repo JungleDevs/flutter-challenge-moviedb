@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:jungle/app/core/constants/api.dart';
 import 'package:jungle/app/core/models/movie_model.dart';
 import 'package:jungle/app/core/repositories/movie_details_repository.dart';
+import 'package:jungle/app/core/utils/convertRuntimeIntoHHMM.dart';
 import 'package:jungle/app/modules/details/details_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:jungle/app/widgets/movie_rating/movie_rating_widget.dart';
@@ -174,12 +175,10 @@ class DetailsPageState extends ModularState<DetailsPage, DetailsBloc> {
                           style: widget.subtitleTextStyle,
                         ),
                         Text(' • ', style: widget.subtitleTextStyle),
-                        //TODO: converter em uma função	auxiliar que tranforme o inteiro em minutos,horas
                         Text(
-                          '${widget.movie.runtime! ~/ 60}h ${widget.movie.runtime! % 60}m',
+                          convertRuntimeIntoHHMM(widget.movie.runtime!),
                           style: widget.subtitleTextStyle,
                           softWrap: true,
-                          maxLines: 3,
                         ),
                       ],
                     ),
@@ -193,7 +192,6 @@ class DetailsPageState extends ModularState<DetailsPage, DetailsBloc> {
                         : EdgeInsets.only(left: 24),
                     child: Container(
                       margin: EdgeInsets.only(right: 10),
-                      // color: Colors.red,
                       width: MediaQuery.of(context).size.width,
                       child: Text(
                         '${widget.movie.overview} ${widget.movie.overview}',
@@ -249,7 +247,6 @@ class DetailsPageState extends ModularState<DetailsPage, DetailsBloc> {
                       physics: NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
                       itemCount: 4,
-                      // shrinkWrap: true,
                       itemBuilder: (ctx, idx) {
                         return MovieTileWidget(
                           movie: widget.movie,
@@ -258,6 +255,9 @@ class DetailsPageState extends ModularState<DetailsPage, DetailsBloc> {
                       }),
                 ),
               ),
+              SizedBox(
+                height: 24,
+              )
             ],
           ),
         )

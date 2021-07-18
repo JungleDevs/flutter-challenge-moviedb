@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jungle/app/core/constants/api.dart';
-import 'package:jungle/app/core/models/trending_movie_model.dart';
 import 'package:jungle/app/widgets/movie_rating/movie_rating_widget.dart';
 
-// ignore: must_be_immutable
 class MovieTileWidget extends StatelessWidget {
   MovieTileWidget({
     Key? key,
@@ -13,9 +11,8 @@ class MovieTileWidget extends StatelessWidget {
     required this.index,
   }) : super(key: key);
 
-  dynamic movie;
-
-  int index;
+  final int index;
+  final movie;
 
   @override
   Widget build(BuildContext context) {
