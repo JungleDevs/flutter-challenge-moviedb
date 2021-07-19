@@ -1,34 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jungle/app/core/constants/api.dart';
+import 'package:jungle/app/core/repositories/trending_movies_repository.dart';
 import 'package:jungle/app/modules/details/details_page.dart';
+import 'package:jungle/app/modules/movies/movies_cubit.dart';
 import 'package:jungle/app/widgets/movie_rating/movie_rating_widget.dart';
 
+// ignore: must_be_immutable
 class MovieTileWidget extends StatelessWidget {
   MovieTileWidget({
     Key? key,
     required this.movie,
     required this.index,
+    required this.stackRoutes,
   }) : super(key: key);
 
   final int index;
   final movie;
+  bool stackRoutes;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onTap: () => Modular.to.pushNamed(
-      //   '/movie_details',
-      //   arguments: {'id': movie.id, 'idx': index},
-      // ),
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  DetailsPage(movieID: movie.id, listIndex: index)),
-        );
+        stackRoutes
+            ? Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BlocProvider<MoviesCubit>.value(
+                    value: MoviesCubit(TrendingMoviesRepository()),
+                    child: DetailsPage(
+                      listIndex: index,
+                      movieID: movie.id,
+                    ),
+                  ),
+                ),
+              )
+            : Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BlocProvider<MoviesCubit>.value(
+                    value: MoviesCubit(TrendingMoviesRepository()),
+                    child: DetailsPage(
+                      listIndex: index,
+                      movieID: movie.id,
+                    ),
+                  ),
+                ),
+              );
       },
       child: Container(
         alignment: Alignment.topLeft,

@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jungle/app/core/repositories/trending_movies_repository.dart';
 import 'package:jungle/app/modules/movies/movies_cubit.dart';
-import 'package:jungle/app/modules/movies/movies_page.dart';
+import 'package:jungle/app/modules/splash/splash.dart';
 
 class AppWidget extends StatelessWidget {
   final TrendingMoviesRepository repository;
 
-  const AppWidget({Key? key, required this.repository}) : super(key: key);
+  const AppWidget({
+    Key? key,
+    required this.repository,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,7 +19,7 @@ class AppWidget extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: BlocProvider(
         create: (context) => MoviesCubit(repository),
-        child: MoviesPage(),
+        child: SplashPage(),
       ),
       theme: ThemeData(
         primarySwatch: Colors.blue,
