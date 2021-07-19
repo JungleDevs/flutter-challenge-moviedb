@@ -1,0 +1,42 @@
+name: jungle
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  #state management
+  flutter_bloc: ^7.0.1
+  bloc: ^7.0.0
+
+  #design
+  google_fonts: ^2.1.0
+  flutter_svg: ^0.22.0
+  lottie: ^1.1.0
+  material_design_icons_flutter: ^5.0.5955-rc.1
+  anim_search_bar: ^2.0.2
+
+  #internet requests
+  dio: ^4.0.0
+
+dev_dependencies:
+  bloc_test: ^8.0.2
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/svg/
+    - assets/images/
+
+  
